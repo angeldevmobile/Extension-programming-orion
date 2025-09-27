@@ -1,0 +1,170 @@
+{
+  "fn": {
+    "syntax": "fn name(params) -> type { ... }",
+    "description": "Defines a new function."
+  },
+  "main": {
+    "syntax": "fn main() { ... }",
+    "description": "Entry point of an Orion program."
+  },
+  "if": {
+    "syntax": "if (condition) { ... } else { ... }",
+    "description": "Conditional statement that executes code based on a condition."
+  },
+  "for": {
+    "syntax": "for (i = 0; i < n; i++) { ... }",
+    "description": "Classic for loop with initialization, condition, and increment."
+  },
+  "while": {
+    "syntax": "while (condition) { ... }",
+    "description": "Loop that executes as long as the condition is true."
+  },
+  "match": {
+    "syntax": "match (value) { case X: {...} default: {...} }",
+    "description": "Pattern matching expression, similar to switch but more powerful."
+  },
+  "return": {
+    "syntax": "return value;",
+    "description": "Exits a function and optionally returns a value."
+  },
+  "break": {
+    "syntax": "break;",
+    "description": "Terminates the nearest loop immediately."
+  },
+  "continue": {
+    "syntax": "continue;",
+    "description": "Skips the rest of the current loop iteration."
+  },
+  "import": {
+    "syntax": "import module from path;",
+    "description": "Imports a module or file."
+  },
+  "let": {
+    "syntax": "let x = value;",
+    "description": "Declares a mutable variable."
+  },
+  "const": {
+    "syntax": "const x = value;",
+    "description": "Declares an immutable constant."
+  },
+  "int": {
+    "syntax": "int x = 10;",
+    "description": "Integer type."
+  },
+  "float": {
+    "syntax": "float y = 3.14;",
+    "description": "Floating-point type."
+  },
+  "string": {
+    "syntax": "string s = \"Hello\";",
+    "description": "Sequence of characters."
+  },
+  "bool": {
+    "syntax": "bool flag = true;",
+    "description": "Boolean type, can be true or false."
+  },
+  "list": {
+    "syntax": "list<int> nums = [1, 2, 3];",
+    "description": "List (array) collection type."
+  },
+  "map": {
+    "syntax": "map<string, int> scores = {\"Alice\": 10};",
+    "description": "Key-value dictionary type."
+  },
+  "true": {
+    "syntax": "true",
+    "description": "Boolean literal representing truth."
+  },
+  "false": {
+    "syntax": "false",
+    "description": "Boolean literal representing falsehood."
+  },
+  "null": {
+    "syntax": "null",
+    "description": "Represents the absence of a value."
+  },
+  "print": {
+    "syntax": "print(\"message\");",
+    "description": "Outputs text or values to the console."
+  },
+  "input": {
+    "syntax": "let name = input(\"Enter your name: \");",
+    "description": "Reads input from the user."
+  },
+  "len": {
+    "syntax": "len(listOrString);",
+    "description": "Returns the length of a list or string."
+  },
+  "typeof": {
+    "syntax": "typeof(value);",
+    "description": "Returns the type of a value."
+  },
+  "assert": {
+    "syntax": "assert(condition);",
+    "description": "Checks that a condition is true; throws an error if not."
+  },
+  "+": {
+    "syntax": "a + b",
+    "description": "Addition operator."
+  },
+  "-": {
+    "syntax": "a - b",
+    "description": "Subtraction operator."
+  },
+  "*": {
+    "syntax": "a * b",
+    "description": "Multiplication operator."
+  },
+  "/": {
+    "syntax": "a / b",
+    "description": "Division operator."
+  },
+  "%": {
+    "syntax": "a % b",
+    "description": "Modulo operator."
+  },
+  "&&": {
+    "syntax": "a && b",
+    "description": "Logical AND operator."
+  },
+  "||": {
+    "syntax": "a || b",
+    "description": "Logical OR operator."
+  },
+  "!": {
+    "syntax": "!a",
+    "description": "Logical NOT operator."
+  },
+  "==": {
+    "syntax": "a == b",
+    "description": "Equality comparison operator."
+  },
+  "!=": {
+    "syntax": "a != b",
+    "description": "Inequality comparison operator."
+  },
+  "<": {
+    "syntax": "a < b",
+    "description": "Less than comparison operator."
+  },
+  ">": {
+    "syntax": "a > b",
+    "description": "Greater than comparison operator."
+  },
+  "<=": {
+    "syntax": "a <= b",
+    "description": "Less than or equal comparison operator."
+  },
+  ">=": {
+    "syntax": "a >= b",
+    "description": "Greater than or equal comparison operator."
+  },
+  "?.": {
+  "syntax": "user?.email",
+  "description": "Safe navigation operator. Returns null if the left side is null, otherwise accesses the property."
+  },
+  "--": {
+  "syntax": "-- This is a comment",
+  "description": "Single-line comment in Orion. Everything after -- is ignored by the interpreter."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "name": "orion-lang",
+  "displayName": "Orion Lang",
+  "description": "Soporte para lenguaje de programación Orion",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.103.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "icon": "images/orion.png",
+
+  "main": "./extension.js",        
+
+  "contributes": {
+    "languages": [
+      {
+        "id": "orion",
+        "aliases": ["Orion", "orion"],
+        "extensions": [".orx"],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "images/orion.png",
+          "dark": "images/orion.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "orion",
+        "scopeName": "source.orion",
+        "path": "./syntaxes/orion.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "Orion Theme",
+        "uiTheme": "vs-dark",
+        "path": "./themes/orion-color-theme.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "orion",
+        "path": "./snippets/orion.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "orion-lang.runOrionFile",
+        "title": "Run Orion File"
+      }
+    ]
+  },
+  "iconThemes": [
+    {
+      "id": "orion-icons",
+      "label": "Orion Icons",
+      "path": "./images/orion-icon-theme.json"
+    }
+  ]
+}

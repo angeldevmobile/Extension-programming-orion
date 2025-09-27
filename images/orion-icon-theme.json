@@ -1,0 +1,10 @@
+{
+  "iconDefinitions": {
+    "orionIcon": {
+      "iconPath": "./images/orion.png"
+    }
+  },
+  "fileExtensions": {
+    "orx": "orionIcon"
+  }
+}

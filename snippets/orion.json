@@ -1,0 +1,132 @@
+{
+  "main function": {
+    "prefix": "main",
+    "body": [
+      "fn main() {",
+      "    $0",
+      "}"
+    ],
+    "description": "Define la función principal"
+  },
+  "function": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:nombre}(${2:parametros}) -> ${3:void} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Crea una función"
+  },
+  "lambda": {
+    "prefix": "lambda",
+    "body": [
+      "let ${1:f} = (${2:param}) -> ${3:int} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Función anónima (lambda)"
+  },
+  "if statement": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condicion}) {",
+      "    $0",
+      "} else {",
+      "    ",
+      "}"
+    ],
+    "description": "Estructura if/else"
+  },
+  "for loop": {
+    "prefix": "for",
+    "body": [
+      "for (${1:i} = 0; ${1:i} < ${2:limite}; ${1:i}++) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Bucle for clásico"
+  },
+  "while loop": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condicion}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Bucle while"
+  },
+  "match expression": {
+    "prefix": "match",
+    "body": [
+      "match (${1:variable}) {",
+      "    case ${2:valor}: {",
+      "        $0",
+      "    }",
+      "    default: {",
+      "        ",
+      "    }",
+      "}"
+    ],
+    "description": "Expresión match/switch"
+  },
+  "print": {
+    "prefix": "print",
+    "body": ["print(${1:mensaje})"],
+    "description": "Imprimir en consola"
+  },
+  "input": {
+    "prefix": "input",
+    "body": ["input(${1:\"Ingrese valor:\"})"],
+    "description": "Entrada de usuario"
+  },
+  "variable declaration": {
+    "prefix": "var",
+    "body": [
+      "${1:int} ${2:nombre} = ${3:valor}"
+    ],
+    "description": "Declaración de variable"
+  },
+  "let declaration": {
+    "prefix": "let",
+    "body": [
+      "let ${1:nombre}: ${2:int} = ${3:valor}"
+    ],
+    "description": "Declaración inmutable con let"
+  },
+  "const declaration": {
+    "prefix": "const",
+    "body": [
+      "const ${1:NOMBRE}: ${2:int} = ${3:valor}"
+    ],
+    "description": "Constante global"
+  },
+  "doc comment": {
+    "prefix": "doc",
+    "body": [
+      "/// ${1:Descripción de la función}",
+      "/// @param ${2:param} ${3:descripción}",
+      "/// @return ${4:tipo}"
+    ],
+    "description": "Comentario de documentación"
+  },
+  "import": {
+    "prefix": "import",
+    "body": [
+      "import ${1:modulo} from \"${2:ruta}\" as ${3:alias}"
+    ],
+    "description": "Importar un módulo"
+  },
+  "class": {
+    "prefix": "class",
+    "body": [
+      "class ${1:Nombre} {",
+      "    ${2:atributo}: ${3:int};",
+      "",
+      "    fn ${4:init}(${5:parametros}) -> void {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "Definición de clase/struct"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "vscode://schemas/color-theme",
+  "name": "Orion Theme",
+  "type": "dark",
+  "colors": {
+    "editor.background": "#0d1117",
+    "editor.foreground": "#c9d1d9",
+    "editorCursor.foreground": "#58a6ff",
+    "editor.lineHighlightBackground": "#161b22",
+    "editorLineNumber.foreground": "#6e7681",
+    "editor.selectionBackground": "#264f78"
+  },
+  "tokenColors": [
+    {
+      "scope": "keyword.control.orion",
+      "settings": { "foreground": "#ff7b72", "fontStyle": "bold" }
+    },
+    {
+      "scope": "keyword.declaration.orion",
+      "settings": { "foreground": "#d2a8ff", "fontStyle": "bold" }
+    },
+    {
+      "scope": "storage.modifier.orion",
+      "settings": { "foreground": "#79c0ff" }
+    },
+    {
+      "scope": "storage.type.orion",
+      "settings": { "foreground": "#ffa657" }
+    },
+    {
+      "scope": "constant.language.boolean.orion",
+      "settings": { "foreground": "#56d364", "fontStyle": "italic" }
+    },
+    {
+      "scope": "string.quoted.double.orion, string.quoted.single.orion",
+      "settings": { "foreground": "#a5d6ff" }
+    },
+    {
+      "scope": "variable.interpolation.orion",
+      "settings": { "foreground": "#ffb86c", "fontStyle": "italic" }
+    },
+    {
+      "scope": "comment.line.double-dash.orion, comment.block.orion, comment.documentation.orion",
+      "settings": { "foreground": "#8b949e", "fontStyle": "italic" }
+    },
+    {
+      "scope": "constant.numeric.orion",
+      "settings": { "foreground": "#f78c6c" }
+    },
+    {
+      "scope": "entity.name.function.orion",
+      "settings": { "foreground": "#d2a8ff" }
+    },
+    {
+      "scope": "support.function.builtin.orion",
+      "settings": { "foreground": "#4fd6be" }
+    },
+    {
+      "scope": "keyword.operator.orion",
+      "settings": { "foreground": "#ffb86c" }
+    },
+    {
+      "scope": "entity.name.annotation.orion",
+      "settings": { "foreground": "#c678dd", "fontStyle": "italic" }
+    },
+    {
+      "scope": "variable.other.orion",
+      "settings": { "foreground": "#ccdd13ef" }
+    }
+  ]
+}
