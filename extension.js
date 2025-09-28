@@ -1,12 +1,26 @@
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
-const cp = require('child_process'); 
+const cp = require('child_process');
+const { LanguageClient, TransportKind } = require('vscode-languageclient/node');
 
 let docs = {};
+let client;
 
 function activate(context) {
   console.log("Orion Extension Activated");
+
+  // --- Inicializar el cliente LSP ---
+  const serverModule = context.asAbsolutePath(path.join("server", "server.js"));
+  const serverOptions = {
+    run: { module: serverModule, transport: TransportKind.ipc },
+    debug: { module: serverModule, transport: TransportKind.ipc }
+  };
+  const clientOptions = {
+    documentSelector: [{ scheme: "file", language: "orion" }]
+  };
+  client = new LanguageClient("orionLSP", "Orion Language Server", serverOptions, clientOptions);
+  client.start();
 
   // --- Load docs.json ---
   const docsPath = path.join(context.extensionPath, "docs", "docs.json");
@@ -110,6 +124,12 @@ function activate(context) {
   context.subscriptions.push(provider, hoverProvider, runOrion);
 }
 
-function deactivate() {}
+function deactivate() {
+  if (!client) return undefined;
+  return client.stop();
+}
 
-module.exports = { activate, deactivate };
+module.exports = {
+  activate,
+  deactivate
+};

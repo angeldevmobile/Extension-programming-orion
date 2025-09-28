@@ -11,19 +11,27 @@
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}", 
-        "${workspaceFolder}/.."   // abre la raíz vscode-orion (con tus .orx)
+        "${workspaceFolder}/.."
       ]
     },
     {
       "name": "Run Orion (.orx)",
       "type": "debugpy",
       "request": "launch",
-      "program": "${workspaceFolder}/../src/main.py", // tu intérprete Orion en Python
+      "program": "${workspaceFolder}/../src/main.py",
       "args": [
         "${file}"
       ],
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "Debug Orion LSP Server",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/server.js",
+      "cwd": "${workspaceFolder}/server",
+      "console": "integratedTerminal"
     }
   ]
 }

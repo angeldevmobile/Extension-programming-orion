@@ -166,5 +166,9 @@
   "--": {
   "syntax": "-- This is a comment",
   "description": "Single-line comment in Orion. Everything after -- is ignored by the interpreter."
+  },
+  "futuristic_power": {
+    "syntax": "futuristic_power(base, exp)",
+    "description": "Potencia futurista: combina pow con warp cósmico. Si exp es par => pow normal, Si exp es impar => pow y se suma PHI."
   }
 }

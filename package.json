@@ -10,15 +10,18 @@
     "Programming Languages"
   ],
   "icon": "images/orion.png",
-
-  "main": "./extension.js",        
-
+  "main": "./extension.js",
   "contributes": {
     "languages": [
       {
         "id": "orion",
-        "aliases": ["Orion", "orion"],
-        "extensions": [".orx"],
+        "aliases": [
+          "Orion",
+          "orion"
+        ],
+        "extensions": [
+          ".orx"
+        ],
         "configuration": "./language-configuration.json",
         "icon": {
           "light": "images/orion.png",
@@ -59,5 +62,8 @@
       "label": "Orion Icons",
       "path": "./images/orion-icon-theme.json"
     }
-  ]
+  ],
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0"
+  }
 }
