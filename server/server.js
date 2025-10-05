@@ -17,7 +17,7 @@ connection.onInitialize(() => {
 	return {
 		capabilities: {
 			textDocumentSync: documents.syncKind,
-			codeActionProvider: true, // 🚀 habilitamos QuickFix
+			codeActionProvider: true, //  habilitamos QuickFix
 		},
 	};
 });
@@ -31,55 +31,76 @@ documents.onDidChangeContent((change) => {
 	const declaredVars = new Map();
 
 	lines.forEach((line, i) => {
-		const trimmed = line.trim();
-		if (!trimmed) return;
+        const trimmed = line.trim();
+        if (!trimmed) return;
 
-		// Comentarios
-		if (trimmed.startsWith("--")) return;
+        // Si la línea parece un comentario pero no usa "--", marcar error
+        if (
+            (trimmed.startsWith("#") ||
+             trimmed.startsWith("//") ||
+             trimmed.startsWith(";") ||
+             trimmed.startsWith("/") ||
+             trimmed.startsWith("%"))
+        ) {
+            diagnostics.push({
+                severity: DiagnosticSeverity.Error,
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: trimmed.length },
+                },
+                message: `Solo se permite '--' para comentarios en Orion.`,
+                code: "invalid-comment",
+                source: "orion-lsp",
+            });
+            return;
+        }
 
-		// Declaración con var/let
-		if (trimmed.startsWith("var ") || trimmed.startsWith("let ")) {
-			const parts = trimmed.split(/\s+/);
-			const varName = parts[1];
-			if (declaredVars.has(varName)) {
-				diagnostics.push({
-					severity: DiagnosticSeverity.Error,
-					range: {
-						start: { line: i, character: 0 },
-						end: { line: i, character: trimmed.length },
-					},
-					message: `Variable "${varName}" ya fue declarada.`,
-					code: "duplicate-var", // 🚀 clave para quick fix
-					source: "orion-lsp",
-				});
-			} else {
-				declaredVars.set(varName, { line: i, used: false });
-			}
-		}
+        // Comentarios válidos
+        if (trimmed.startsWith("--")) return;
 
-		// Declaración implícita: x = ...
-		else if (/^\w+\s*=/.test(trimmed)) {
-			const varName = trimmed.split("=")[0].trim();
-			if (!declaredVars.has(varName)) {
-				declaredVars.set(varName, { line: i, used: false });
-			} else {
-				declaredVars.get(varName).used = true;
-			}
-		}
+        // Declaración con var/let
+        if (trimmed.startsWith("var ") || trimmed.startsWith("let ")) {
+            const parts = trimmed.split(/\s+/);
+            const varName = parts[1];
+            if (declaredVars.has(varName)) {
+                diagnostics.push({
+                    severity: DiagnosticSeverity.Error,
+                    range: {
+                        start: { line: i, character: 0 },
+                        end: { line: i, character: trimmed.length },
+                    },
+                    message: `Variable "${varName}" ya fue declarada.`,
+                    code: "duplicate-var",
+                    source: "orion-lsp",
+                });
+            } else {
+                declaredVars.set(varName, { line: i, used: false });
+            }
+        }
 
-		// Si no es palabra clave válida → error
-		else if (!/^(return|break|continue|import|show)\b/.test(trimmed)) {
-			diagnostics.push({
-				severity: DiagnosticSeverity.Error,
-				range: {
-					start: { line: i, character: 0 },
-					end: { line: i, character: trimmed.length },
-				},
-				message: `Sintaxis no válida: "${trimmed}".`,
-				code: "invalid-syntax", // 🚀 para quick fix
-				source: "orion-lsp",
-			});
-		}
+        // Declaración implícita: x = ...
+        else if (/^\w+\s*=/.test(trimmed)) {
+            const varName = trimmed.split("=")[0].trim();
+            if (!declaredVars.has(varName)) {
+                declaredVars.set(varName, { line: i, used: false });
+            } else {
+                declaredVars.get(varName).used = true;
+            }
+        }
+
+        // Si no es palabra clave válida → error
+        else if (!/^(return|break|continue|import|show)\b/.test(trimmed)) {
+            diagnostics.push({
+                severity: DiagnosticSeverity.Error,
+                range: {
+                    start: { line: i, character: 0 },
+                    end: { line: i, character: trimmed.length },
+                },
+                message: `Sintaxis no válida: "${trimmed}".`,
+                code: "invalid-syntax",
+                source: "orion-lsp",
+            });
+        }
 	});
 
 	// Warning: variables no usadas
@@ -92,7 +113,7 @@ documents.onDidChangeContent((change) => {
 					end: { line: info.line, character: name.length },
 				},
 				message: `Variable "${name}" declarada pero nunca usada.`,
-				code: "unused-var", // 🚀 quick fix
+				code: "unused-var", // quick fix
 				source: "orion-lsp",
 			});
 		}
@@ -104,7 +125,7 @@ documents.onDidChangeContent((change) => {
 	connection.sendDiagnostics({ uri: change.document.uri, diagnostics });
 });
 
-// 🚀 QuickFixes
+//  QuickFixes
 connection.onCodeAction((params) => {
 	const diagnostics = documentDiagnostics.get(params.textDocument.uri) || [];
 	const actions = [];

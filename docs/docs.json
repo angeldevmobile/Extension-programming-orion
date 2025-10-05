@@ -160,15 +160,630 @@
     "description": "Greater than or equal comparison operator."
   },
   "?.": {
-  "syntax": "user?.email",
-  "description": "Safe navigation operator. Returns null if the left side is null, otherwise accesses the property."
+    "syntax": "user?.email",
+    "description": "Safe navigation operator. Returns null if the left side is null, otherwise accesses the property."
   },
   "--": {
-  "syntax": "-- This is a comment",
-  "description": "Single-line comment in Orion. Everything after -- is ignored by the interpreter."
+    "syntax": "-- This is a comment",
+    "description": "Single-line comment in Orion. Everything after -- is ignored by the interpreter."
   },
   "futuristic_power": {
     "syntax": "futuristic_power(base, exp)",
     "description": "Potencia futurista: combina pow con warp cósmico. Si exp es par => pow normal, Si exp es impar => pow y se suma PHI."
+  },
+  "load": {
+    "syntax": "load(path = \".env\")",
+    "description": "Loads variables from a .env file if present.",
+    "params": {
+      "path": "Path to the .env file (default: \".env\")."
+    },
+    "returns": "True if loaded, False if not found.",
+    "example": "load()"
+  },
+  "pull": {
+    "syntax": "pull(key, default = null)",
+    "description": "Gets an environment variable by key.",
+    "params": {
+      "key": "Name of the variable.",
+      "default": "Value to return if not found (optional)."
+    },
+    "returns": "Value of the variable or default.",
+    "example": "pull(\"API_KEY\")"
+  },
+  "push": {
+    "syntax": "push(key, value)",
+    "description": "Sets an environment variable.",
+    "params": {
+      "key": "Name of the variable.",
+      "value": "Value to set."
+    },
+    "returns": "Object with key and value.",
+    "example": "push(\"MODE\", \"production\")"
+  },
+  "reveal": {
+    "syntax": "reveal()",
+    "description": "Lists all current environment variables.",
+    "returns": "None.",
+    "example": "reveal()"
+  },
+  "cwd": {
+    "syntax": "cwd()",
+    "description": "Returns the current working directory.",
+    "returns": "String with the current directory path.",
+    "example": "cwd()"
+  },
+  "ls": {
+    "syntax": "ls(path = \".\")",
+    "description": "Lists files and folders in a directory.",
+    "params": {
+      "path": "Directory to list (default: \".\")."
+    },
+    "returns": "List of file and folder paths.",
+    "example": "ls(\"/home/user\")"
+  },
+  "walk": {
+    "syntax": "walk(path = \".\")",
+    "description": "Recursively walks the file tree.",
+    "params": {
+      "path": "Root directory (default: \".\")."
+    },
+    "returns": "List of all file and folder paths.",
+    "example": "walk(\"src\")"
+  },
+  "home": {
+    "syntax": "home()",
+    "description": "Returns the user's home directory.",
+    "returns": "String with the home directory path.",
+    "example": "home()"
+  },
+  "join": {
+    "syntax": "join(...parts)",
+    "description": "Safely joins path parts.",
+    "params": {
+      "parts": "Path segments to join."
+    },
+    "returns": "String with the joined path.",
+    "example": "join(\"folder\", \"file.txt\")"
+  },
+  "exists": {
+    "syntax": "exists(path)",
+    "description": "Checks if a file or directory exists.",
+    "params": {
+      "path": "Path to check."
+    },
+    "returns": "True if exists, False otherwise.",
+    "example": "exists(\"data.json\")"
+  },
+  "is_file": {
+    "syntax": "is_file(path)",
+    "description": "Checks if the path is a file.",
+    "params": {
+      "path": "Path to check."
+    },
+    "returns": "True if file, False otherwise.",
+    "example": "is_file(\"main.py\")"
+  },
+  "is_dir": {
+    "syntax": "is_dir(path)",
+    "description": "Checks if the path is a directory.",
+    "params": {
+      "path": "Path to check."
+    },
+    "returns": "True if directory, False otherwise.",
+    "example": "is_dir(\"src\")"
+  },
+  "read": {
+    "syntax": "read(path, binary = false)",
+    "description": "Reads the content of a file.",
+    "params": {
+      "path": "File path.",
+      "binary": "Read as binary (default: false)."
+    },
+    "returns": "File content as string or bytes.",
+    "example": "read(\"notes.txt\")"
+  },
+  "write": {
+    "syntax": "write(path, content, binary = false)",
+    "description": "Writes content to a file (overwrites).",
+    "params": {
+      "path": "File path.",
+      "content": "Content to write.",
+      "binary": "Write as binary (default: false)."
+    },
+    "returns": "None.",
+    "example": "write(\"output.txt\", \"Hello!\")"
+  },
+  "append": {
+    "syntax": "append(path, content)",
+    "description": "Appends text to the end of a file.",
+    "params": {
+      "path": "File path.",
+      "content": "Text to append."
+    },
+    "returns": "None.",
+    "example": "append(\"log.txt\", \"New entry\\n\")"
+  },
+  "copy": {
+    "syntax": "copy(src, dst, overwrite = true)",
+    "description": "Copies a file.",
+    "params": {
+      "src": "Source file path.",
+      "dst": "Destination file path.",
+      "overwrite": "Overwrite if exists (default: true)."
+    },
+    "returns": "True if copied, False if skipped.",
+    "example": "copy(\"a.txt\", \"b.txt\")"
+  },
+  "move": {
+    "syntax": "move(src, dst)",
+    "description": "Moves a file.",
+    "params": {
+      "src": "Source file path.",
+      "dst": "Destination file path."
+    },
+    "returns": "None.",
+    "example": "move(\"old.txt\", \"new.txt\")"
+  },
+  "delete": {
+    "syntax": "delete(path)",
+    "description": "Deletes a file.",
+    "params": {
+      "path": "File path."
+    },
+    "returns": "None.",
+    "example": "delete(\"temp.txt\")"
+  },
+  "backup": {
+    "syntax": "backup(path, suffix = \".bak\")",
+    "description": "Creates a quick backup of a file.",
+    "params": {
+      "path": "File path.",
+      "suffix": "Backup file suffix (default: \".bak\")."
+    },
+    "returns": "Path to the backup file or False if not found.",
+    "example": "backup(\"config.json\")"
+  },
+  "autobackup": {
+    "syntax": "autobackup(path, target_dir = \".autobackups\", keep_last = 5, algo = \"sha256\")",
+    "description": "Automatically backs up a file if it changed. Keeps only the last N versions.",
+    "params": {
+      "path": "File path.",
+      "target_dir": "Backup directory.",
+      "keep_last": "Number of versions to keep.",
+      "algo": "Hash algorithm (default: \"sha256\")."
+    },
+    "returns": "Path to new backup or None if unchanged.",
+    "example": "autobackup(\"settings.json\")"
+  },
+  "read_async": {
+    "syntax": "await read_async(path)",
+    "description": "Reads a file asynchronously.",
+    "params": {
+      "path": "File path."
+    },
+    "returns": "File content.",
+    "example": "await read_async(\"data.txt\")"
+  },
+  "write_async": {
+    "syntax": "await write_async(path, content)",
+    "description": "Writes to a file asynchronously.",
+    "params": {
+      "path": "File path.",
+      "content": "Content to write."
+    },
+    "returns": "None.",
+    "example": "await write_async(\"async.txt\", \"Hello\")"
+  },
+  "mkdir": {
+    "syntax": "mkdir(path, exist_ok = true)",
+    "description": "Creates a directory (and parents if needed).",
+    "params": {
+      "path": "Directory path.",
+      "exist_ok": "No error if exists (default: true)."
+    },
+    "returns": "None.",
+    "example": "mkdir(\"build\")"
+  },
+  "clear_dir": {
+    "syntax": "clear_dir(path)",
+    "description": "Deletes all contents inside a directory, but not the directory itself.",
+    "params": {
+      "path": "Directory path."
+    },
+    "returns": "None.",
+    "example": "clear_dir(\"tmp\")"
+  },
+  "rmdir": {
+    "syntax": "rmdir(path)",
+    "description": "Deletes a directory and all its contents.",
+    "params": {
+      "path": "Directory path."
+    },
+    "returns": "None.",
+    "example": "rmdir(\"old_build\")"
+  },
+  "info": {
+    "syntax": "info(path)",
+    "description": "Returns detailed info about a file.",
+    "params": {
+      "path": "File path."
+    },
+    "returns": "Dictionary with file metadata.",
+    "example": "info(\"main.py\")"
+  },
+  "hash": {
+    "syntax": "hash(path, algo = \"sha256\")",
+    "description": "Calculates the hash of a file.",
+    "params": {
+      "path": "File path.",
+      "algo": "Hash algorithm (default: \"sha256\")."
+    },
+    "returns": "Hexadecimal hash string.",
+    "example": "hash(\"data.csv\")"
+  },
+  "space": {
+    "syntax": "space(path = \".\")",
+    "description": "Returns total, used, and free space in bytes.",
+    "params": {
+      "path": "Path to check (default: \".\")."
+    },
+    "returns": "Dictionary with total, used, and free space.",
+    "example": "space(\"/\")"
+  },
+  "clone_dir": {
+    "syntax": "clone_dir(src, dst, include_hidden = false)",
+    "description": "Copies an entire directory (like duplicating a project).",
+    "params": {
+      "src": "Source directory.",
+      "dst": "Destination directory.",
+      "include_hidden": "Include hidden files (default: false)."
+    },
+    "returns": "Path to the new directory.",
+    "example": "clone_dir(\"src\", \"src_copy\")"
+  },
+  "snapshot": {
+    "syntax": "snapshot(path, target_dir = \".snapshots\")",
+    "description": "Saves a temporary snapshot of a file or folder.",
+    "params": {
+      "path": "File or folder path.",
+      "target_dir": "Snapshot directory."
+    },
+    "returns": "Path to the snapshot.",
+    "example": "snapshot(\"project/\")"
+  },
+  "versioned_snapshot": {
+    "syntax": "versioned_snapshot(path, target_dir = \".vshots\", keep_last = 10)",
+    "description": "Saves a versioned snapshot (like git-lite).",
+    "params": {
+      "path": "File or folder path.",
+      "target_dir": "Snapshot directory.",
+      "keep_last": "Number of versions to keep."
+    },
+    "returns": "Path to the new versioned snapshot.",
+    "example": "versioned_snapshot(\"src/\")"
+  },
+  "stream_read": {
+    "syntax": "stream_read(path, chunk_size = 8192)",
+    "description": "Reads a file as a stream (generator).",
+    "params": {
+      "path": "File path.",
+      "chunk_size": "Bytes per chunk (default: 8192)."
+    },
+    "returns": "Generator yielding file chunks.",
+    "example": "for chunk in stream_read(\"bigfile.bin\") { ... }"
+  },
+  "stream_hash": {
+    "syntax": "stream_hash(path, algo = \"sha256\", chunk_size = 8192)",
+    "description": "Calculates progressive hash while reading a file.",
+    "params": {
+      "path": "File path.",
+      "algo": "Hash algorithm.",
+      "chunk_size": "Bytes per chunk."
+    },
+    "returns": "Generator yielding (chunk, hash) pairs.",
+    "example": "for chunk, h in stream_hash(\"bigfile.bin\") { ... }"
+  },
+  "safe_write": {
+    "syntax": "safe_write(path, content, binary = false)",
+    "description": "Atomically writes to a file to avoid corruption.",
+    "params": {
+      "path": "File path.",
+      "content": "Content to write.",
+      "binary": "Write as binary (default: false)."
+    },
+    "returns": "None.",
+    "example": "safe_write(\"atomic.txt\", \"Safe!\")"
+  },
+  "ensure": {
+    "syntax": "ensure(path, default = \"\")",
+    "description": "Creates a file with default content if it does not exist.",
+    "params": {
+      "path": "File path.",
+      "default": "Default content (default: empty string)."
+    },
+    "returns": "Path to the file.",
+    "example": "ensure(\"settings.json\", \"{}\")"
+  },
+  "absorb": {
+    "syntax": "absorb(path)",
+    "description": "Absorbs a JSON file and returns an Orion object.",
+    "params": {
+      "path": "Path to the JSON file."
+    },
+    "returns": "Parsed JSON object.",
+    "example": "absorb(\"data.json\")"
+  },
+  "emit": {
+    "syntax": "emit(path, obj, beauty = true)",
+    "description": "Emits an Orion object to a JSON file.",
+    "params": {
+      "path": "Path to the output file.",
+      "obj": "Object to serialize.",
+      "beauty": "Pretty print (default: true)."
+    },
+    "returns": "None.",
+    "example": "emit(\"out.json\", obj)"
+  },
+  "parse": {
+    "syntax": "parse(raw)",
+    "description": "Transmutes a raw JSON string into a live Orion object.",
+    "params": {
+      "raw": "Raw JSON string."
+    },
+    "returns": "Parsed JSON object.",
+    "example": "parse('{\"a\": 1}')"
+  },
+  "forge": {
+    "syntax": "forge(obj, beauty = false)",
+    "description": "Forges a JSON string from an Orion object.",
+    "params": {
+      "obj": "Object to serialize.",
+      "beauty": "Pretty print (default: false)."
+    },
+    "returns": "JSON string.",
+    "example": "forge(obj, beauty = true)"
+  },
+  "fuse": {
+    "syntax": "fuse(...objs)",
+    "description": "Fuses multiple JSON objects into one unified entity.",
+    "params": {
+      "objs": "Objects to merge."
+    },
+    "returns": "Unified JSON object.",
+    "example": "fuse(obj1, obj2)"
+  },
+  "trace": {
+    "syntax": "trace(obj, path)",
+    "description": "Traces a value within a JSON using a route like 'user.profile.name'.",
+    "params": {
+      "obj": "JSON object.",
+      "path": "Dot-separated path."
+    },
+    "returns": "Value at the path or null.",
+    "example": "trace(user, \"profile.email\")"
+  },
+  "haspath": {
+    "syntax": "haspath(obj, path)",
+    "description": "Checks if a route exists within a JSON structure.",
+    "params": {
+      "obj": "JSON object.",
+      "path": "Dot-separated path."
+    },
+    "returns": "True if path exists, False otherwise.",
+    "example": "haspath(user, \"profile.email\")"
+  },
+  "shiftmap": {
+    "syntax": "shiftmap(a, b)",
+    "description": "Reveals mutations between two JSON structures (like a diff).",
+    "params": {
+      "a": "Original JSON object.",
+      "b": "Modified JSON object."
+    },
+    "returns": "Dict with 'added', 'removed', and 'altered' keys.",
+    "example": "shiftmap(old, new)"
+  },
+  "filter_by": {
+    "syntax": "filter_by(items, condition)",
+    "description": "Filters a list of JSON objects using a lambda condition.",
+    "params": {
+      "items": "List of objects.",
+      "condition": "Lambda function."
+    },
+    "returns": "Filtered list.",
+    "example": "filter_by(users, lambda x: x[\"active\"])"
+  },
+  "extract": {
+    "syntax": "extract(obj, fields)",
+    "description": "Extracts selected keys from a JSON object or list.",
+    "params": {
+      "obj": "Object or list.",
+      "fields": "List of keys to extract."
+    },
+    "returns": "Object or list with selected fields.",
+    "example": "extract(user, [\"name\", \"email\"])"
+  },
+  "replicate": {
+    "syntax": "replicate(obj)",
+    "description": "Replicates a JSON object deeply.",
+    "params": {
+      "obj": "Object to copy."
+    },
+    "returns": "Deep copy of the object.",
+    "example": "replicate(user)"
+  },
+  "purify": {
+    "syntax": "purify(obj)",
+    "description": "Purifies a JSON object, removing null, empty, or void values.",
+    "params": {
+      "obj": "Object to purify."
+    },
+    "returns": "Purified object.",
+    "example": "purify(data)"
+  },
+  "merge_deep": {
+    "syntax": "merge_deep(a, b)",
+    "description": "Deep merge of two JSON objects (recursive).",
+    "params": {
+      "a": "Base object.",
+      "b": "Object to merge."
+    },
+    "returns": "Merged object.",
+    "example": "merge_deep(settings, overrides)"
+  },
+  "sort_keys": {
+    "syntax": "sort_keys(obj, deep = true)",
+    "description": "Sorts JSON object keys for determinism.",
+    "params": {
+      "obj": "Object to sort.",
+      "deep": "Sort nested objects (default: true)."
+    },
+    "returns": "Object with sorted keys.",
+    "example": "sort_keys(obj)"
+  },
+  "patch": {
+    "syntax": "patch(obj, changes)",
+    "description": "Applies a shallow patch (mini JSON patch).",
+    "params": {
+      "obj": "Original object.",
+      "changes": "Dictionary of changes."
+    },
+    "returns": "Patched object.",
+    "example": "patch(user, {\"age\": 31})"
+  },
+  "validate": {
+    "syntax": "validate(obj, schema)",
+    "description": "Minimalistic schema validator.",
+    "params": {
+      "obj": "Object to validate.",
+      "schema": "Schema dictionary (e.g., {\"name\": str, \"age\": int})."
+    },
+    "returns": "True if valid, False otherwise.",
+    "example": "validate(user, {\"name\": str, \"age\": int})"
+  },
+  "stream_absorb": {
+    "syntax": "stream_absorb(path)",
+    "description": "Reads a large JSON file progressively (streaming).",
+    "params": {
+      "path": "Path to the JSON file."
+    },
+    "returns": "Generator yielding JSON objects.",
+    "example": "for obj in stream_absorb(\"big.json\") { ... }"
+  },
+  "encrypt": {
+    "syntax": "encrypt(obj, key)",
+    "description": "Encrypts a JSON object with a simple XOR cipher (demo purpose).",
+    "params": {
+      "obj": "Object to encrypt.",
+      "key": "Integer key."
+    },
+    "returns": "Encrypted string.",
+    "example": "encrypt(data, 42)"
+  },
+  "decrypt": {
+    "syntax": "decrypt(raw, key)",
+    "description": "Decrypts a JSON object previously encrypted with encrypt().",
+    "params": {
+      "raw": "Encrypted string.",
+      "key": "Integer key."
+    },
+    "returns": "Decrypted JSON object.",
+    "example": "decrypt(enc, 42)"
+  },
+  "reach": {
+    "syntax": "reach(url, params = null, headers = null)",
+    "description": "Reaches out to a URL with HTTP GET.",
+    "params": {
+      "url": "Target URL.",
+      "params": "Query parameters (optional).",
+      "headers": "HTTP headers (optional)."
+    },
+    "returns": "Dictionary with status, body, json, and headers.",
+    "example": "reach(\"https://api.example.com/data\")"
+  },
+  "transmit": {
+    "syntax": "transmit(url, data = null, json_data = null, headers = null)",
+    "description": "Transmits data to a URL with HTTP POST.",
+    "params": {
+      "url": "Target URL.",
+      "data": "Form data to send (optional).",
+      "json_data": "JSON data to send (optional).",
+      "headers": "HTTP headers (optional)."
+    },
+    "returns": "Dictionary with status, body, json, and headers.",
+    "example": "transmit(\"https://api.example.com/post\", json_data={\"a\":1})"
+  },
+  "stream": {
+    "syntax": "stream(url, headers = null, chunk_size = 1024)",
+    "description": "Streams data from a URL in chunks.",
+    "params": {
+      "url": "Target URL.",
+      "headers": "HTTP headers (optional).",
+      "chunk_size": "Bytes per chunk (default: 1024)."
+    },
+    "returns": "Generator yielding data chunks.",
+    "example": "for chunk in stream(\"https://example.com/largefile\") { ... }"
+  },
+  "download": {
+    "syntax": "download(url, path, headers = null)",
+    "description": "Downloads a resource from the web and saves it to a file.",
+    "params": {
+      "url": "Resource URL.",
+      "path": "Destination file path.",
+      "headers": "HTTP headers (optional)."
+    },
+    "returns": "Dictionary with status and path.",
+    "example": "download(\"https://example.com/file.zip\", \"file.zip\")"
+  },
+  "status": {
+    "syntax": "status(url)",
+    "description": "Quick status probe of a URL using HTTP HEAD.",
+    "params": {
+      "url": "Target URL."
+    },
+    "returns": "Dictionary with status code and headers.",
+    "example": "status(\"https://example.com\")"
+  },
+  "resolve": {
+    "syntax": "resolve(host)",
+    "description": "Resolves a hostname into its raw IP address.",
+    "params": {
+      "host": "Hostname to resolve."
+    },
+    "returns": "String with the IP address.",
+    "example": "resolve(\"example.com\")"
+  },
+  "pulse": {
+    "syntax": "pulse(host, port = 80, timeout = 1)",
+    "description": "Sends a fast TCP pulse (like a futuristic ping).",
+    "params": {
+      "host": "Target host.",
+      "port": "Port number (default: 80).",
+      "timeout": "Timeout in seconds (default: 1)."
+    },
+    "returns": "Dictionary with alive status and latency (ms).",
+    "example": "pulse(\"example.com\")"
+  },
+  "beacon": {
+    "syntax": "beacon(host, port = 80, msg = \"orion-signal\", timeout = 1)",
+    "description": "Sends a message to a host and awaits reply (futuristic ping).",
+    "params": {
+      "host": "Target host.",
+      "port": "Port number (default: 80).",
+      "msg": "Message to send (default: \"orion-signal\").",
+      "timeout": "Timeout in seconds (default: 1)."
+    },
+    "returns": "Dictionary with reply or error.",
+    "example": "beacon(\"example.com\", 8080, \"hello\")"
+  },
+  "broadcast": {
+    "syntax": "broadcast(host, port = 9999, msg = \"orion-broadcast\")",
+    "description": "Sends a UDP broadcast signal.",
+    "params": {
+      "host": "Broadcast address.",
+      "port": "Port number (default: 9999).",
+      "msg": "Message to broadcast (default: \"orion-broadcast\")."
+    },
+    "returns": "Dictionary with sent message and target, or error.",
+    "example": "broadcast(\"255.255.255.255\", 9999, \"hi network!\")"
   }
 }

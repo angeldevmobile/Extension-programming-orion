@@ -128,5 +128,12 @@
       "}"
     ],
     "description": "Definición de clase/struct"
+  },
+  "line comment": {
+    "prefix": "comment",
+    "body": [
+      "-- ${1:comentario}"
+    ],
+    "description": "Comentario de línea Orion"
   }
 }
