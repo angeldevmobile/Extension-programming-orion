@@ -4,6 +4,7 @@
   "scopeName": "source.orion",
   "patterns": [
     { "include": "#keywords" },
+    { "include": "#modules" },
     { "include": "#types" },
     { "include": "#constants" },
     { "include": "#strings" },
@@ -32,6 +33,18 @@
         {
           "name": "keyword.exception.orion",
           "match": "\\b(error|panic|raise)\\b"
+        },
+        {
+          "name": "keyword.import.orion",
+          "match": "\\buse\\b"
+        }
+      ]
+    },
+    "modules": {
+      "patterns": [
+        {
+          "name": "entity.name.module.orion",
+          "match": "\\b(fs|log|json)\\b"
         }
       ]
     },
@@ -47,7 +60,7 @@
       "patterns": [
         {
           "name": "constant.language.boolean.orion",
-          "match": "\\b(true|false|null|undefined)\\b"
+          "match": "\\b(true|false|yes|no|null|undefined)\\b"
         }
       ]
     },
@@ -126,7 +139,7 @@
       "patterns": [
         {
           "name": "support.function.builtin.orion",
-          "match": "\\b(print|input|len|typeof|assert|range|map|filter|reduce)\\b"
+          "match": "\\b(print|input|len|typeof|assert|show|load|pull|push|reveal|cwd|ls|walk|home|join|exists|is_file|is_dir|read|write|append|copy|move|delete|backup|autobackup|read_async|write_async|mkdir|clear_dir|rmdir|info|hash|space|clone_dir|snapshot|versioned_snapshot|stream_read|stream_hash|safe_write|ensure|absorb|emit|parse|forge|fuse|trace|haspath|shiftmap|filter_by|extract|replicate|purify|merge_deep|sort_keys|patch|validate|stream_absorb|encrypt|decrypt|reach|transmit|stream|download|status|resolve|pulse|beacon|broadcast|futuristic_power)\\b"
         },
         {
           "name": "entity.name.function.orion",
@@ -159,6 +172,10 @@
         {
           "name": "keyword.operator.bitwise.orion",
           "match": "(\\&|\\||\\^|~|<<|>>)"
+        },
+        {
+          "name": "keyword.operator.special.orion",
+          "match": "\\?\\."
         }
       ]
     },

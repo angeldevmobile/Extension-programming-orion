@@ -1,9 +1,13 @@
+console.log("Orion LSP server iniciado"); // <-- Agrega esto arriba de todo
+
 const {
 	createConnection,
 	TextDocuments,
 	DiagnosticSeverity,
 	CodeActionKind
 } = require("vscode-languageserver/node");
+const fs = require("fs");
+const path = require("path");
 
 const connection = createConnection();
 const documents = new TextDocuments();
@@ -12,6 +16,60 @@ documents.listen(connection);
 
 // Guardamos diagnósticos por documento para quick fixes
 const documentDiagnostics = new Map();
+
+// Carga docs.json al iniciar el servidor
+const docsPath = path.join(__dirname, "../docs/docs.json");
+let docs = {};
+try {
+    docs = JSON.parse(fs.readFileSync(docsPath, "utf8"));
+} catch (e) {
+    console.error("No se pudo cargar docs.json:", e);
+}
+
+// Función auxiliar para obtener la palabra bajo el cursor
+function getWordAtPosition(document, position) {
+    const line = document.getText({
+        start: { line: position.line, character: 0 },
+        end: { line: position.line + 1, character: 0 }
+    });
+    const regex = /\b\w+\b/g;
+    let match;
+    while ((match = regex.exec(line))) {
+        if (match.index <= position.character && regex.lastIndex >= position.character) {
+            return match[0];
+        }
+    }
+    return null;
+}
+
+// Busca docstring y firma de función definida por el usuario
+function findUserFunctionDoc(document, word) {
+    const lines = document.getText().split(/\r?\n/);
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        // Soporta firmas con tipos y flechas
+        const fnMatch = line.match(/^fn\s+(\w+)\s*\(([^)]*)\)(\s*->\s*\w+)?/);
+        if (fnMatch && fnMatch[1] === word) {
+            // Busca docstring multilínea arriba (soporta líneas vacías entre comentarios)
+            let doc = "";
+            let j = i - 1;
+            while (j >= 0) {
+                const prev = lines[j].trim();
+                if (prev.startsWith("--")) {
+                    doc = prev.replace(/^--\s?/, "") + "\n" + doc;
+                    j--;
+                } else if (prev === "") {
+                    j--; // permite líneas vacías entre comentarios
+                } else {
+                    break;
+                }
+            }
+            const signature = line;
+            return { doc: doc.trim(), signature };
+        }
+    }
+    return null;
+}
 
 connection.onInitialize(() => {
 	return {
@@ -121,8 +179,8 @@ documents.onDidChangeContent((change) => {
 
 	// Guardamos diagnósticos para este doc
 	documentDiagnostics.set(change.document.uri, diagnostics);
-
-	connection.sendDiagnostics({ uri: change.document.uri, diagnostics });
+    console.log("Enviando diagnósticos:", diagnostics);
+    connection.sendDiagnostics({ uri: change.document.uri, diagnostics });
 });
 
 //  QuickFixes
@@ -186,6 +244,53 @@ connection.onCodeAction((params) => {
 	});
 
 	return actions;
+});
+
+// Proveedor de hover robusto
+connection.onHover((params) => {
+    const document = documents.get(params.textDocument.uri);
+    const word = getWordAtPosition(document, params.position);
+
+    // 1. Busca en docs.json
+    if (word && docs[word]) {
+        const entry = docs[word];
+        let md = `**${word}**\n\n`;
+        if (entry.syntax) md += `\`\`\`orion\n${entry.syntax}\n\`\`\`\n`;
+        if (entry.description) md += `${entry.description}\n`;
+        return { contents: { kind: "markdown", value: md } };
+    }
+
+    // 2. Busca si es función definida por el usuario
+    const userFn = findUserFunctionDoc(document, word);
+    if (userFn) {
+        let md = `**${word}**\n\n`;
+        md += `\`\`\`orion\n${userFn.signature}\n\`\`\`\n`;
+        if (userFn.doc) md += userFn.doc + "\n";
+        return { contents: { kind: "markdown", value: md } };
+    }
+
+    // 3. (Opcional) Hover para variables: muestra la línea de declaración
+    const lines = document.getText().split(/\r?\n/);
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (
+            line.startsWith("let ") ||
+            line.startsWith("var ") ||
+            line.startsWith("const ")
+        ) {
+            const parts = line.split(/\s+/);
+            if (parts[1] === word) {
+                return {
+                    contents: {
+                        kind: "markdown",
+                        value: `\`${line}\`\nDeclaración de variable.`
+                    }
+                };
+            }
+        }
+    }
+
+    return null;
 });
 
 connection.listen();

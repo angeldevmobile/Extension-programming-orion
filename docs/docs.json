@@ -785,5 +785,29 @@
     },
     "returns": "Dictionary with sent message and target, or error.",
     "example": "broadcast(\"255.255.255.255\", 9999, \"hi network!\")"
+  },
+  "yes": {
+    "syntax": "yes",
+    "description": "Boolean literal representing truth in Orion (equivalent to true)."
+  },
+  "no": {
+    "syntax": "no",
+    "description": "Boolean literal representing falsehood in Orion (equivalent to false)."
+  },
+  "show": {
+    "syntax": "show(value)",
+    "description": "Muestra un valor en la consola Orion."
+  },
+  "log": {
+    "syntax": "use log",
+    "description": "Orion standard module for logging and tracing."
+  },
+  "fs": {
+    "syntax": "use fs",
+    "description": "Orion standard module for file system operations."
+  },
+  "json": {
+    "syntax": "use json",
+    "description": "Orion standard module for JSON manipulation."
   }
 }
