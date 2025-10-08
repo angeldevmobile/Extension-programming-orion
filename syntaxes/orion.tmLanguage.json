@@ -44,7 +44,7 @@
       "patterns": [
         {
           "name": "entity.name.module.orion",
-          "match": "\\b(fs|log|json)\\b"
+          "match": "(?<=\\buse\\s)\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
         }
       ]
     },
