@@ -11,6 +11,8 @@
   ],
   "icon": "images/orion.png",
   "main": "./extension.js",
+  "activationEvents": [
+  ],
   "contributes": {
     "languages": [
       {
@@ -20,7 +22,9 @@
           "orion"
         ],
         "extensions": [
-          ".orx"
+          ".orx",
+          ".or",
+          ".orion"
         ],
         "configuration": "./language-configuration.json",
         "icon": {
@@ -52,9 +56,63 @@
     "commands": [
       {
         "command": "orion-lang.runOrionFile",
-        "title": "Run Orion File"
+        "title": "Run Orion File",
+        "icon": "$(play)"
+      },
+      {
+        "command": "orion-lang.restartLanguageServer",
+        "title": "Restart Orion Language Server",
+        "icon": "$(refresh)"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceExtname == .orx || resourceExtname == .or || resourceExtname == .orion",
+          "command": "orion-lang.runOrionFile",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "orion-lang.runOrionFile",
+          "when": "editorLangId == orion"
+        },
+        {
+          "command": "orion-lang.restartLanguageServer",
+          "when": "editorLangId == orion"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "Orion",
+      "properties": {
+        "orion.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Orion language server."
+        },
+        "orion.enableIntelliSense": {
+          "scope": "window",
+          "type": "boolean",
+          "default": true,
+          "description": "Enable IntelliSense features for Orion."
+        },
+        "orion.maxNumberOfProblems": {
+          "scope": "resource",
+          "type": "number",
+          "default": 100,
+          "description": "Controls the maximum number of problems produced by the server."
+        }
+      }
+    }
   },
   "iconThemes": [
     {
@@ -63,7 +121,17 @@
       "path": "./images/orion-icon-theme.json"
     }
   ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
   "dependencies": {
     "vscode-languageclient": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.103.0",
+    "@types/node": "^16.x",
+    "typescript": "^4.9.4"
   }
 }

@@ -3,40 +3,53 @@
   "name": "Orion",
   "scopeName": "source.orion",
   "patterns": [
+    { "include": "#comments" },
     { "include": "#keywords" },
     { "include": "#modules" },
+    { "include": "#functions" },
     { "include": "#types" },
     { "include": "#constants" },
     { "include": "#strings" },
-    { "include": "#comments" },
     { "include": "#numbers" },
-    { "include": "#functions" },
     { "include": "#operators" },
     { "include": "#annotations" },
+    { "include": "#function-calls" },
     { "include": "#variables" }
   ],
   "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-dash.orion",
+          "match": "--.*$"
+        },
+        {
+          "name": "comment.documentation.orion",
+          "match": "---.*$"
+        },
+        {
+          "name": "invalid.illegal.comment.orion",
+          "match": "(//|#|;|%).*$"
+        }
+      ]
+    },
     "keywords": {
       "patterns": [
         {
           "name": "keyword.control.orion",
-          "match": "\\b(if|else|for|while|return|break|continue|fn|match|switch|case|default|import|from|as|try|catch|finally|throw)\\b"
+          "match": "\\b(if|else|for|while|return|break|continue|match|case|default)\\b"
         },
         {
           "name": "keyword.declaration.orion",
-          "match": "\\b(let|const|var|class|struct|enum|interface|module|package)\\b"
-        },
-        {
-          "name": "storage.modifier.orion",
-          "match": "\\b(public|private|protected|static|final|async|await)\\b"
-        },
-        {
-          "name": "keyword.exception.orion",
-          "match": "\\b(error|panic|raise)\\b"
+          "match": "\\b(fn|let|const|var)\\b"
         },
         {
           "name": "keyword.import.orion",
-          "match": "\\buse\\b"
+          "match": "\\b(import|use|from)\\b"
+        },
+        {
+          "name": "keyword.other.orion",
+          "match": "\\b(main|async|await)\\b"
         }
       ]
     },
@@ -44,23 +57,39 @@
       "patterns": [
         {
           "name": "entity.name.module.orion",
-          "match": "(?<=\\buse\\s)\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+          "match": "(?<=\\b(use|import)\\s+)\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
         }
       ]
     },
     "types": {
       "patterns": [
         {
-          "name": "storage.type.orion",
-          "match": "\\b(int|float|string|bool|void|list|map|char|any|object|number)\\b"
+          "name": "storage.type.primitive.orion",
+          "match": "\\b(int|float|string|bool|void|char|any)\\b"
+        },
+        {
+          "name": "storage.type.collection.orion",
+          "match": "\\b(list|map|array)\\b"
+        },
+        {
+          "name": "storage.type.special.orion",
+          "match": "\\b(object|number|auto)\\b"
         }
       ]
     },
     "constants": {
       "patterns": [
         {
-          "name": "constant.language.boolean.orion",
-          "match": "\\b(true|false|yes|no|null|undefined)\\b"
+          "name": "constant.language.boolean.true.orion",
+          "match": "\\b(true|yes)\\b"
+        },
+        {
+          "name": "constant.language.boolean.false.orion", 
+          "match": "\\b(false|no)\\b"
+        },
+        {
+          "name": "constant.language.null.orion",
+          "match": "\\b(null|undefined)\\b"
         }
       ]
     },
@@ -73,11 +102,19 @@
           "patterns": [
             {
               "name": "constant.character.escape.orion",
+              "match": "\\\\(n|r|t|\\\\|\"|'|0|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4})"
+            },
+            {
+              "name": "invalid.illegal.escape.orion",
               "match": "\\\\."
             },
             {
               "name": "variable.interpolation.orion",
-              "match": "\\$\\{[a-zA-Z_][a-zA-Z0-9_]*\\}"
+              "begin": "\\$\\{",
+              "end": "\\}",
+              "patterns": [
+                { "include": "#expressions" }
+              ]
             }
           ]
         },
@@ -88,30 +125,13 @@
           "patterns": [
             {
               "name": "constant.character.escape.orion",
+              "match": "\\\\(n|r|t|\\\\|\"|'|0)"
+            },
+            {
+              "name": "invalid.illegal.escape.orion",
               "match": "\\\\."
             }
           ]
-        }
-      ]
-    },
-    "comments": {
-      "patterns": [
-        {
-          "name": "comment.line.double-dash.orion",
-          "match": "--.*$"
-        },
-        {
-          "name": "comment.line.double-slash.orion",
-          "match": "//.*$"
-        },
-        {
-          "name": "comment.documentation.orion",
-          "match": "///.*$"
-        },
-        {
-          "name": "comment.block.orion",
-          "begin": "/\\*",
-          "end": "\\*/"
         }
       ]
     },
@@ -119,32 +139,88 @@
       "patterns": [
         {
           "name": "constant.numeric.float.orion",
-          "match": "\\b\\d+\\.\\d+([eE][+-]?\\d+)?\\b"
+          "match": "\\b\\d+\\.\\d+([eE][+-]?\\d+)?[fF]?\\b"
         },
         {
-          "name": "constant.numeric.integer.orion",
-          "match": "\\b\\d+\\b"
+          "name": "constant.numeric.integer.decimal.orion",
+          "match": "\\b\\d+[lL]?\\b"
         },
         {
-          "name": "constant.numeric.hex.orion",
-          "match": "\\b0x[0-9a-fA-F]+\\b"
+          "name": "constant.numeric.integer.hexadecimal.orion",
+          "match": "\\b0[xX][0-9a-fA-F]+[lL]?\\b"
         },
         {
-          "name": "constant.numeric.binary.orion",
-          "match": "\\b0b[01]+\\b"
+          "name": "constant.numeric.integer.binary.orion",
+          "match": "\\b0[bB][01]+[lL]?\\b"
+        },
+        {
+          "name": "constant.numeric.integer.octal.orion",
+          "match": "\\b0[oO][0-7]+[lL]?\\b"
         }
       ]
     },
     "functions": {
       "patterns": [
         {
-          "name": "support.function.builtin.orion",
-          "match": "\\b(print|input|len|typeof|assert|show|load|pull|push|reveal|cwd|ls|walk|home|join|exists|is_file|is_dir|read|write|append|copy|move|delete|backup|autobackup|read_async|write_async|mkdir|clear_dir|rmdir|info|hash|space|clone_dir|snapshot|versioned_snapshot|stream_read|stream_hash|safe_write|ensure|absorb|emit|parse|forge|fuse|trace|haspath|shiftmap|filter_by|extract|replicate|purify|merge_deep|sort_keys|patch|validate|stream_absorb|encrypt|decrypt|reach|transmit|stream|download|status|resolve|pulse|beacon|broadcast|futuristic_power)\\b"
+          "name": "meta.function.declaration.orion",
+          "begin": "\\b(fn)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(",
+          "beginCaptures": {
+            "1": { "name": "keyword.declaration.orion" },
+            "2": { "name": "entity.name.function.orion" }
+          },
+          "end": "\\)",
+          "patterns": [
+            { "include": "#function-parameters" }
+          ]
         },
         {
-          "name": "entity.name.function.orion",
-          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*(?=\\()"
+          "name": "support.function.builtin.io.orion",
+          "match": "\\b(print|input|show|read|write|append)\\b"
+        },
+        {
+          "name": "support.function.builtin.fs.orion",
+          "match": "\\b(load|pull|push|reveal|cwd|ls|walk|home|join|exists|is_file|is_dir|copy|move|delete|backup|autobackup|mkdir|clear_dir|rmdir|info|hash|space|clone_dir|snapshot|versioned_snapshot|safe_write|ensure)\\b"
+        },
+        {
+          "name": "support.function.builtin.json.orion",
+          "match": "\\b(absorb|emit|parse|forge|fuse|trace|haspath|shiftmap|filter_by|extract|replicate|purify|merge_deep|sort_keys|patch|validate|stream_absorb|encrypt|decrypt)\\b"
+        },
+        {
+          "name": "support.function.builtin.net.orion",
+          "match": "\\b(reach|transmit|stream|download|status|resolve|pulse|beacon|broadcast)\\b"
+        },
+        {
+          "name": "support.function.builtin.util.orion",
+          "match": "\\b(len|typeof|assert|futuristic_power)\\b"
+        },
+        {
+          "name": "support.function.builtin.async.orion",
+          "match": "\\b(read_async|write_async|stream_read|stream_hash)\\b"
         }
+      ]
+    },
+    "function-calls": {
+      "patterns": [
+        {
+          "name": "meta.function-call.orion",
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+          "captures": {
+            "1": { "name": "entity.name.function.call.orion" }
+          }
+        }
+      ]
+    },
+    "function-parameters": {
+      "patterns": [
+        {
+          "name": "variable.parameter.orion",
+          "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+        },
+        {
+          "match": ":",
+          "name": "punctuation.separator.type.orion"
+        },
+        { "include": "#types" }
       ]
     },
     "operators": {
@@ -167,15 +243,27 @@
         },
         {
           "name": "keyword.operator.logical.orion",
-          "match": "(\\&\\&|\\|\\||!)"
+          "match": "(&&|\\|\\||!)"
         },
         {
           "name": "keyword.operator.bitwise.orion",
-          "match": "(\\&|\\||\\^|~|<<|>>)"
+          "match": "(&|\\||\\^|~|<<|>>)"
         },
         {
-          "name": "keyword.operator.special.orion",
+          "name": "keyword.operator.safe-navigation.orion",
           "match": "\\?\\."
+        },
+        {
+          "name": "keyword.operator.arrow.orion",
+          "match": "->"
+        },
+        {
+          "name": "punctuation.separator.orion",
+          "match": "[,;]"
+        },
+        {
+          "name": "punctuation.section.brackets.orion",
+          "match": "[\\[\\]{}()]"
         }
       ]
     },
@@ -190,9 +278,24 @@
     "variables": {
       "patterns": [
         {
+          "name": "variable.other.constant.orion",
+          "match": "\\b[A-Z][A-Z0-9_]*\\b"
+        },
+        {
           "name": "variable.other.orion",
           "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
         }
+      ]
+    },
+    "expressions": {
+      "patterns": [
+        { "include": "#keywords" },
+        { "include": "#constants" },
+        { "include": "#numbers" },
+        { "include": "#strings" },
+        { "include": "#operators" },
+        { "include": "#function-calls" },
+        { "include": "#variables" }
       ]
     }
   }

@@ -6,7 +6,7 @@
       "    $0",
       "}"
     ],
-    "description": "Define la función principal"
+    "description": "Define la función principal del programa"
   },
   "function": {
     "prefix": "fn",
@@ -17,26 +17,103 @@
     ],
     "description": "Crea una función"
   },
+  "function with return": {
+    "prefix": "fnr",
+    "body": [
+      "fn ${1:nombre}(${2:parametros}) -> ${3:int} {",
+      "    return ${4:valor};",
+      "}"
+    ],
+    "description": "Función que retorna un valor"
+  },
+  "async function": {
+    "prefix": "fna",
+    "body": [
+      "async fn ${1:nombre}(${2:parametros}) -> ${3:Future<int>} {",
+      "    await ${4:operacion_asincrona}();",
+      "    return ${5:valor};",
+      "}"
+    ],
+    "description": "Función asíncrona"
+  },
+  "generic function": {
+    "prefix": "fng",
+    "body": [
+      "fn ${1:nombre}<T>(${2:param}: T) -> T {",
+      "    return ${3:param};",
+      "}"
+    ],
+    "description": "Función genérica con tipos"
+  },
   "lambda": {
     "prefix": "lambda",
     "body": [
       "let ${1:f} = (${2:param}) -> ${3:int} {",
-      "    $0",
+      "    return ${4:valor};",
       "}"
     ],
     "description": "Función anónima (lambda)"
   },
+  "closure": {
+    "prefix": "closure",
+    "body": [
+      "let ${1:closure} = |${2:param}| -> ${3:int} {",
+      "    return ${4:valor};",
+      "};"
+    ],
+    "description": "Closure con captura de variables"
+  },
+
   "if statement": {
     "prefix": "if",
     "body": [
       "if (${1:condicion}) {",
       "    $0",
-      "} else {",
-      "    ",
       "}"
     ],
-    "description": "Estructura if/else"
+    "description": "Estructura if simple"
   },
+  "if else statement": {
+    "prefix": "ife",
+    "body": [
+      "if (${1:condicion}) {",
+      "    ${2:// código verdadero}",
+      "} else {",
+      "    ${3:// código falso}",
+      "}"
+    ],
+    "description": "Estructura if/else completa"
+  },
+  "if else if chain": {
+    "prefix": "ifeif",
+    "body": [
+      "if (${1:condicion1}) {",
+      "    ${2:// código 1}",
+      "} else if (${3:condicion2}) {",
+      "    ${4:// código 2}",
+      "} else {",
+      "    ${5:// código por defecto}",
+      "}"
+    ],
+    "description": "Cadena if/else if/else"
+  },
+  "ternary operator": {
+    "prefix": "tern",
+    "body": [
+      "${1:variable} = ${2:condicion} ? ${3:valor_true} : ${4:valor_false};"
+    ],
+    "description": "Operador ternario"
+  },
+  "guard clause": {
+    "prefix": "guard",
+    "body": [
+      "if (!${1:condicion}) {",
+      "    return ${2:valor_error};",
+      "}"
+    ],
+    "description": "Cláusula de guardia"
+  },
+
   "for loop": {
     "prefix": "for",
     "body": [
@@ -45,6 +122,24 @@
       "}"
     ],
     "description": "Bucle for clásico"
+  },
+  "for in loop": {
+    "prefix": "forin",
+    "body": [
+      "for (${1:elemento} in ${2:coleccion}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Bucle for..in para iterables"
+  },
+  "for range": {
+    "prefix": "forr",
+    "body": [
+      "for (${1:i} in 0..${2:limite}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Bucle for con rango"
   },
   "while loop": {
     "prefix": "while",
@@ -55,85 +150,646 @@
     ],
     "description": "Bucle while"
   },
+  "do while loop": {
+    "prefix": "dowhile",
+    "body": [
+      "do {",
+      "    $0",
+      "} while (${1:condicion});"
+    ],
+    "description": "Bucle do-while"
+  },
+  "foreach loop": {
+    "prefix": "foreach",
+    "body": [
+      "foreach (${1:item} in ${2:coleccion}) {",
+      "    $0",
+      "}"
+    ],
+    "description": "Bucle foreach"
+  },
+  "loop infinito": {
+    "prefix": "loop",
+    "body": [
+      "loop {",
+      "    ${1:// código}",
+      "    if (${2:condicion_salida}) {",
+      "        break;",
+      "    }",
+      "}"
+    ],
+    "description": "Bucle infinito con break"
+  },
+
   "match expression": {
     "prefix": "match",
     "body": [
       "match (${1:variable}) {",
-      "    case ${2:valor}: {",
-      "        $0",
+      "    case ${2:patron1}: {",
+      "        ${3:// código}",
+      "    }",
+      "    case ${4:patron2}: {",
+      "        ${5:// código}",
       "    }",
       "    default: {",
-      "        ",
+      "        ${6:// código por defecto}",
       "    }",
       "}"
     ],
     "description": "Expresión match/switch"
   },
-  "print": {
-    "prefix": "print",
-    "body": ["print(${1:mensaje})"],
-    "description": "Imprimir en consola"
+  "match with guard": {
+    "prefix": "matchg",
+    "body": [
+      "match (${1:variable}) {",
+      "    case ${2:patron} if (${3:condicion}): {",
+      "        ${4:// código}",
+      "    }",
+      "    default: {",
+      "        ${5:// código por defecto}",
+      "    }",
+      "}"
+    ],
+    "description": "Match con guards"
   },
-  "input": {
-    "prefix": "input",
-    "body": ["input(${1:\"Ingrese valor:\"})"],
-    "description": "Entrada de usuario"
+  "destructuring match": {
+    "prefix": "matchd",
+    "body": [
+      "match (${1:tupla}) {",
+      "    case (${2:a}, ${3:b}): {",
+      "        ${4:// usar a y b}",
+      "    }",
+      "    default: {",
+      "        ${5:// otros casos}",
+      "    }",
+      "}"
+    ],
+    "description": "Match con destructuring"
   },
+
   "variable declaration": {
     "prefix": "var",
     "body": [
-      "${1:int} ${2:nombre} = ${3:valor}"
+      "${1:int} ${2:nombre} = ${3:valor};"
     ],
-    "description": "Declaración de variable"
+    "description": "Declaración de variable tipada"
   },
   "let declaration": {
     "prefix": "let",
     "body": [
-      "let ${1:nombre}: ${2:int} = ${3:valor}"
+      "let ${1:nombre}: ${2:int} = ${3:valor};"
     ],
     "description": "Declaración inmutable con let"
+  },
+  "let auto": {
+    "prefix": "leta",
+    "body": [
+      "let ${1:nombre} = ${2:valor};"
+    ],
+    "description": "Let con inferencia de tipo"
+  },
+  "mutable variable": {
+    "prefix": "mut",
+    "body": [
+      "let mut ${1:nombre}: ${2:int} = ${3:valor};"
+    ],
+    "description": "Variable mutable"
   },
   "const declaration": {
     "prefix": "const",
     "body": [
-      "const ${1:NOMBRE}: ${2:int} = ${3:valor}"
+      "const ${1:NOMBRE}: ${2:int} = ${3:valor};"
     ],
     "description": "Constante global"
   },
-  "doc comment": {
-    "prefix": "doc",
+  "static variable": {
+    "prefix": "static",
     "body": [
-      "/// ${1:Descripción de la función}",
-      "/// @param ${2:param} ${3:descripción}",
-      "/// @return ${4:tipo}"
+      "static ${1:NOMBRE}: ${2:int} = ${3:valor};"
     ],
-    "description": "Comentario de documentación"
+    "description": "Variable estática"
   },
+
+  "array declaration": {
+    "prefix": "array",
+    "body": [
+      "let ${1:array}: [${2:int}] = [${3:1}, ${4:2}, ${5:3}];"
+    ],
+    "description": "Declaración de array"
+  },
+  "dynamic array": {
+    "prefix": "vec",
+    "body": [
+      "let ${1:vector}: Vec<${2:int}> = Vec::new();"
+    ],
+    "description": "Vector dinámico"
+  },
+  "map declaration": {
+    "prefix": "map",
+    "body": [
+      "let ${1:mapa}: Map<${2:string}, ${3:int}> = {",
+      "    \"${4:clave1}\": ${5:valor1},",
+      "    \"${6:clave2}\": ${7:valor2}",
+      "};"
+    ],
+    "description": "Mapa/diccionario"
+  },
+  "hashmap": {
+    "prefix": "hashmap",
+    "body": [
+      "let ${1:map}: HashMap<${2:string}, ${3:int}> = HashMap::new();"
+    ],
+    "description": "HashMap"
+  },
+  "set declaration": {
+    "prefix": "set",
+    "body": [
+      "let ${1:conjunto}: Set<${2:int}> = {${3:1}, ${4:2}, ${5:3}};"
+    ],
+    "description": "Conjunto/Set"
+  },
+  "tuple": {
+    "prefix": "tuple",
+    "body": [
+      "let ${1:tupla}: (${2:int}, ${3:string}) = (${4:valor1}, ${5:\"valor2\"});"
+    ],
+    "description": "Tupla"
+  },
+  "option type": {
+    "prefix": "option",
+    "body": [
+      "let ${1:opcional}: Option<${2:int}> = Some(${3:valor});"
+    ],
+    "description": "Tipo opcional"
+  },
+  "result type": {
+    "prefix": "result",
+    "body": [
+      "let ${1:resultado}: Result<${2:int}, ${3:string}> = Ok(${4:valor});"
+    ],
+    "description": "Tipo resultado para manejo de errores"
+  },
+
+  "struct": {
+    "prefix": "struct",
+    "body": [
+      "struct ${1:Nombre} {",
+      "    ${2:campo1}: ${3:int},",
+      "    ${4:campo2}: ${5:string}",
+      "}"
+    ],
+    "description": "Definición de estructura"
+  },
+  "struct with methods": {
+    "prefix": "structm",
+    "body": [
+      "struct ${1:Nombre} {",
+      "    ${2:campo}: ${3:int}",
+      "}",
+      "",
+      "impl ${1:Nombre} {",
+      "    fn new(${2:campo}: ${3:int}) -> Self {",
+      "        return Self { ${2:campo} };",
+      "    }",
+      "",
+      "    fn ${4:metodo}(&self) -> ${5:int} {",
+      "        return self.${2:campo};",
+      "    }",
+      "}"
+    ],
+    "description": "Estructura con métodos"
+  },
+  "enum": {
+    "prefix": "enum",
+    "body": [
+      "enum ${1:Nombre} {",
+      "    ${2:Variante1},",
+      "    ${3:Variante2}(${4:int}),",
+      "    ${5:Variante3} { ${6:campo}: ${7:string} }",
+      "}"
+    ],
+    "description": "Enumeración con variantes"
+  },
+  "union": {
+    "prefix": "union",
+    "body": [
+      "union ${1:Nombre} {",
+      "    ${2:campo1}: ${3:int},",
+      "    ${4:campo2}: ${5:float}",
+      "}"
+    ],
+    "description": "Unión de tipos"
+  },
+  "trait": {
+    "prefix": "trait",
+    "body": [
+      "trait ${1:Nombre} {",
+      "    fn ${2:metodo}(&self) -> ${3:int};",
+      "",
+      "    fn ${4:metodo_default}(&self) -> ${5:string} {",
+      "        return \"${6:valor_por_defecto}\";",
+      "    }",
+      "}"
+    ],
+    "description": "Definición de trait/interfaz"
+  },
+  "interface": {
+    "prefix": "interface",
+    "body": [
+      "interface ${1:Nombre} {",
+      "    fn ${2:metodo}(${3:parametros}) -> ${4:tipo};",
+      "}"
+    ],
+    "description": "Definición de interfaz"
+  },
+  "type alias": {
+    "prefix": "type",
+    "body": [
+      "type ${1:NuevoTipo} = ${2:TipoExistente};"
+    ],
+    "description": "Alias de tipo"
+  },
+  "generic type": {
+    "prefix": "generic",
+    "body": [
+      "struct ${1:Nombre}<T> {",
+      "    ${2:valor}: T",
+      "}"
+    ],
+    "description": "Tipo genérico"
+  },
+
+  "try catch": {
+    "prefix": "try",
+    "body": [
+      "try {",
+      "    ${1:// código que puede fallar}",
+      "} catch (${2:error}: ${3:ErrorType}) {",
+      "    ${4:// manejo del error}",
+      "}"
+    ],
+    "description": "Manejo de errores try/catch"
+  },
+  "try catch finally": {
+    "prefix": "tryf",
+    "body": [
+      "try {",
+      "    ${1:// código}",
+      "} catch (${2:error}: ${3:ErrorType}) {",
+      "    ${4:// manejo del error}",
+      "} finally {",
+      "    ${5:// limpieza}",
+      "}"
+    ],
+    "description": "Try/catch/finally"
+  },
+  "unwrap": {
+    "prefix": "unwrap",
+    "body": [
+      "${1:resultado}.unwrap_or(${2:valor_por_defecto})"
+    ],
+    "description": "Unwrap con valor por defecto"
+  },
+  "error propagation": {
+    "prefix": "prop",
+    "body": [
+      "${1:operacion}?"
+    ],
+    "description": "Propagación de errores con ?"
+  },
+
+  "async await": {
+    "prefix": "await",
+    "body": [
+      "let ${1:resultado} = await ${2:operacion_asincrona}();"
+    ],
+    "description": "Operación await"
+  },
+  "spawn task": {
+    "prefix": "spawn",
+    "body": [
+      "let ${1:handle} = spawn(async {",
+      "    ${2:// tarea asíncrona}",
+      "});"
+    ],
+    "description": "Crear tarea asíncrona"
+  },
+  "future": {
+    "prefix": "future",
+    "body": [
+      "let ${1:future}: Future<${2:int}> = async {",
+      "    ${3:// código asíncrono}",
+      "    return ${4:valor};",
+      "};"
+    ],
+    "description": "Future/Promise"
+  },
+
   "import": {
     "prefix": "import",
     "body": [
-      "import ${1:modulo} from \"${2:ruta}\" as ${3:alias}"
+      "import ${1:modulo} from \"${2:ruta}\";"
     ],
-    "description": "Importar un módulo"
+    "description": "Importar módulo"
   },
-  "class": {
-    "prefix": "class",
+  "import as": {
+    "prefix": "importas",
     "body": [
-      "class ${1:Nombre} {",
-      "    ${2:atributo}: ${3:int};",
-      "",
-      "    fn ${4:init}(${5:parametros}) -> void {",
+      "import ${1:modulo} from \"${2:ruta}\" as ${3:alias};"
+    ],
+    "description": "Importar con alias"
+  },
+  "import selective": {
+    "prefix": "imports",
+    "body": [
+      "import { ${1:funcion1}, ${2:funcion2} } from \"${3:modulo}\";"
+    ],
+    "description": "Importación selectiva"
+  },
+  "use": {
+    "prefix": "use",
+    "body": [
+      "use ${1:libreria}::${2:modulo};"
+    ],
+    "description": "Usar librería"
+  },
+  "module": {
+    "prefix": "module",
+    "body": [
+      "module ${1:nombre} {",
+      "    ${2:// contenido del módulo}",
+      "    ",
+      "    pub fn ${3:funcion_publica}() {",
       "        $0",
       "    }",
       "}"
     ],
-    "description": "Definición de clase/struct"
+    "description": "Definición de módulo"
   },
+  "export": {
+    "prefix": "export",
+    "body": [
+      "pub ${1:fn} ${2:nombre}() {",
+      "    $0",
+      "}"
+    ],
+    "description": "Exportar función/tipo"
+  },
+
+  "print": {
+    "prefix": "print",
+    "body": ["print(${1:mensaje});"],
+    "description": "Imprimir en consola"
+  },
+  "show": {
+    "prefix": "show",
+    "body": ["show(${1:\"mensaje\"});"],
+    "description": "Mostrar mensaje (built-in Orion)"
+  },
+  "println": {
+    "prefix": "println",
+    "body": ["println(${1:\"mensaje\"});"],
+    "description": "Imprimir con nueva línea"
+  },
+  "input": {
+    "prefix": "input",
+    "body": ["let ${1:entrada} = input(${2:\"Ingrese valor:\"});"],
+    "description": "Entrada de usuario"
+  },
+  "read file": {
+    "prefix": "readfile",
+    "body": [
+      "let ${1:contenido} = fs::read_to_string(\"${2:archivo.txt}\")?;"
+    ],
+    "description": "Leer archivo"
+  },
+  "write file": {
+    "prefix": "writefile",
+    "body": [
+      "fs::write(\"${1:archivo.txt}\", ${2:contenido})?;"
+    ],
+    "description": "Escribir archivo"
+  },
+
+  "test function": {
+    "prefix": "test",
+    "body": [
+      "#[test]",
+      "fn ${1:test_name}() {",
+      "    ${2:// preparación}",
+      "    let ${3:resultado} = ${4:funcion_a_probar}();",
+      "    ",
+      "    assert_eq!(${3:resultado}, ${5:valor_esperado});",
+      "}"
+    ],
+    "description": "Función de test"
+  },
+  "assert": {
+    "prefix": "assert",
+    "body": ["assert!(${1:condicion});"],
+    "description": "Assertion simple"
+  },
+  "assert equals": {
+    "prefix": "asserteq",
+    "body": ["assert_eq!(${1:actual}, ${2:esperado});"],
+    "description": "Assert igualdad"
+  },
+  "benchmark": {
+    "prefix": "bench",
+    "body": [
+      "#[bench]",
+      "fn ${1:bench_name}(b: &mut Bencher) {",
+      "    b.iter(|| {",
+      "        ${2:// código a medir}",
+      "    });",
+      "}"
+    ],
+    "description": "Función de benchmark"
+  },
+
+  "doc comment": {
+    "prefix": "doc",
+    "body": [
+      "/// ${1:Descripción de la función}",
+      "/// ",
+      "/// # Parámetros",
+      "/// * `${2:param}` - ${3:descripción del parámetro}",
+      "/// ",
+      "/// # Retorna",
+      "/// ${4:descripción del retorno}",
+      "/// ",
+      "/// # Ejemplos",
+      "/// ```",
+      "/// ${5:ejemplo_de_uso}",
+      "/// ```"
+    ],
+    "description": "Comentario de documentación completo"
+  },
+  "doc function": {
+    "prefix": "docfn",
+    "body": [
+      "/// ${1:Descripción}",
+      "/// ",
+      "/// # Parámetros",
+      "/// * `${2:param}` - ${3:descripción}",
+      "/// ",
+      "/// # Retorna",
+      "/// ${4:descripción del retorno}",
+      "fn ${5:nombre}(${6:parametros}) -> ${7:tipo} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Función documentada"
+  },
+  "module doc": {
+    "prefix": "moddoc",
+    "body": [
+      "//! # ${1:Nombre del Módulo}",
+      "//! ",
+      "//! ${2:Descripción del módulo}",
+      "//! ",
+      "//! ## Ejemplos",
+      "//! ```",
+      "//! ${3:ejemplo}",
+      "//! ```"
+    ],
+    "description": "Documentación de módulo"
+  },
+
   "line comment": {
-    "prefix": "comment",
+    "prefix": "--",
     "body": [
       "-- ${1:comentario}"
     ],
     "description": "Comentario de línea Orion"
+  },
+  "block comment": {
+    "prefix": "/*",
+    "body": [
+      "/*",
+      " * ${1:comentario de bloque}",
+      " */"
+    ],
+    "description": "Comentario de bloque"
+  },
+  "todo comment": {
+    "prefix": "todo",
+    "body": [
+      "-- TODO: ${1:descripción de la tarea}"
+    ],
+    "description": "Comentario TODO"
+  },
+  "fixme comment": {
+    "prefix": "fixme",
+    "body": [
+      "-- FIXME: ${1:descripción del problema}"
+    ],
+    "description": "Comentario FIXME"
+  },
+  "note comment": {
+    "prefix": "note",
+    "body": [
+      "-- NOTE: ${1:nota importante}"
+    ],
+    "description": "Nota importante"
+  },
+
+  "return statement": {
+    "prefix": "ret",
+    "body": ["return ${1:valor};"],
+    "description": "Statement de retorno"
+  },
+  "break statement": {
+    "prefix": "break",
+    "body": ["break;"],
+    "description": "Break en bucle"
+  },
+  "continue statement": {
+    "prefix": "continue",
+    "body": ["continue;"],
+    "description": "Continue en bucle"
+  },
+  "yield statement": {
+    "prefix": "yield",
+    "body": ["yield ${1:valor};"],
+    "description": "Yield para generadores"
+  },
+  "string template": {
+    "prefix": "template",
+    "body": [
+      "\"${1:texto} \\${${2:variable}} ${3:más texto}\""
+    ],
+    "description": "String con interpolación"
+  },
+  "raw string": {
+    "prefix": "raw",
+    "body": [
+      "r\"${1:string sin escape}\""
+    ],
+    "description": "String literal crudo"
+  },
+  "multiline string": {
+    "prefix": "multiline",
+    "body": [
+      "\"\"\"",
+      "${1:string multilínea}",
+      "\"\"\""
+    ],
+    "description": "String multilínea"
+  },
+
+  "orion program": {
+    "prefix": "program",
+    "body": [
+      "//! Programa Orion",
+      "//! Autor: ${1:nombre}",
+      "//! Descripción: ${2:descripción}",
+      "",
+      "fn main() {",
+      "    $0",
+      "}"
+    ],
+    "description": "Plantilla básica de programa"
+  },
+  "cli program": {
+    "prefix": "cliprog",
+    "body": [
+      "//! Programa CLI en Orion",
+      "",
+      "import std::env;",
+      "import std::process;",
+      "",
+      "fn main() {",
+      "    let args = env::args().collect::<Vec<String>>();",
+      "    ",
+      "    if args.len() < 2 {",
+      "        eprintln!(\"Uso: {} ${1:argumentos}\", args[0]);",
+      "        process::exit(1);",
+      "    }",
+      "    ",
+      "    ${2:// lógica del programa}",
+      "}"
+    ],
+    "description": "Programa CLI con argumentos"
+  },
+  "web server": {
+    "prefix": "webserver",
+    "body": [
+      "//! Servidor web básico en Orion",
+      "",
+      "import web::{ Server, Router, Request, Response };",
+      "",
+      "fn main() {",
+      "    let mut router = Router::new();",
+      "    ",
+      "    router.get(\"/\", |req: Request| -> Response {",
+      "        Response::ok(\"¡Hola desde Orion!\")",
+      "    });",
+      "    ",
+      "    let server = Server::new(\"127.0.0.1:8080\");",
+      "    server.run(router);",
+      "}"
+    ],
+    "description": "Servidor web básico"
   }
 }
